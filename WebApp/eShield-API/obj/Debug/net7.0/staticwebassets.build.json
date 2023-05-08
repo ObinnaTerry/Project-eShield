@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "2E90/OJDMAUzCilPliUJckEwhVxDgnYsadSQzu8L79g=",
+  "Source": "eShield-API",
+  "BasePath": "_content/eShield-API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
