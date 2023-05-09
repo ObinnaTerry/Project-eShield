@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using eShield_API.Data;
 
 namespace eShield_API
 {
@@ -6,6 +9,11 @@ namespace eShield_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("eShield_APIContextConnection") ?? throw new InvalidOperationException("Connection string 'eShield_APIContextConnection' not found.");
+
+            builder.Services.AddDbContext<eShield_APIContext>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<eShield_APIContext>();
 
             // Add services to the container.
 
