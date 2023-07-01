@@ -56,20 +56,23 @@ namespace ProxyService
             try
             {
                 string clientIpAddress = context.Request.RemoteEndPoint.Address.ToString();
-                _logger.Information(clientIpAddress);
+                _logger.Information($"Received request from {clientIpAddress}");
 
-                // Read the request headers
                 WebHeaderCollection headers = (WebHeaderCollection)context.Request.Headers;
 
-                // Read specific header values
                 string userAgent = headers["User-Agent"];
                 string contentType = headers["Content-Type"];
 
-                // Read the destination URL and port
                 string destinationUrl = context.Request.Url.ToString();
-                int destinationPort = context.Request.Url.Port;
 
-                // Read the client's request body
+                // Extract the destination host and port from the request URL
+                Uri requestUri = new Uri(destinationUrl);
+                string destinationHost = requestUri.Host;
+                string scheme = requestUri.Scheme;
+                int destinationPort =  scheme == "http" ? 80 : 443;
+                string httpMethod = context.Request.HttpMethod;
+
+
                 using (StreamReader reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
                 {
                     string request = await reader.ReadToEndAsync();
@@ -77,13 +80,27 @@ namespace ProxyService
                     // Create HttpClient instance
                     using (HttpClient httpClient = new HttpClient())
                     {
-                        // Forward the request to the target server
-                        HttpResponseMessage response = await httpClient.PostAsync(destinationUrl, new StringContent(request));
+                        // Construct the target URL with the extracted destination host and port
+                        string targetUrl = destinationPort != -1 ? $"{requestUri.Scheme}://{destinationHost}:{destinationPort}{requestUri.PathAndQuery}" :
+                                                $"{requestUri.Scheme}://{destinationHost}{requestUri.PathAndQuery}";
 
-                        // Read the response from the target server
+                        HttpResponseMessage response;
+                        if (httpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
+                        {
+                            response = await httpClient.GetAsync(targetUrl);
+                        }
+                        else if (httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                        {
+                            response = await httpClient.PostAsync(targetUrl, new StringContent(request));
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                            return;
+                        }
+
                         byte[] responseBytes = await response.Content.ReadAsByteArrayAsync();
 
-                        // Forward the response to the client
                         context.Response.ContentLength64 = responseBytes.Length;
                         await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length);
                     }
@@ -91,7 +108,6 @@ namespace ProxyService
             }
             catch (Exception ex)
             {
-                // Handle any exceptions that occur during the proxying process
                 Console.WriteLine($"Error: {ex.Message}");
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
@@ -103,22 +119,38 @@ namespace ProxyService
 
         private static string? GetWifiIpAddress()
         {
-            NetworkInterface wifiInterface = NetworkInterface.GetAllNetworkInterfaces()
-                .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);
+            string hostName = Dns.GetHostName();
+            IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
 
-            if (wifiInterface != null)
+            IPAddress wifiIpAddress = hostEntry.AddressList.FirstOrDefault(
+                address => address.AddressFamily == AddressFamily.InterNetwork);
+
+            if (wifiIpAddress != null)
             {
-                IPInterfaceProperties ipProperties = wifiInterface.GetIPProperties();
-                IPAddress wifiIpAddress = ipProperties.UnicastAddresses
-                    .FirstOrDefault(a => a.Address.AddressFamily == AddressFamily.InterNetwork)?.Address;
-
-                if (wifiIpAddress != null)
-                {
-                    return wifiIpAddress.ToString();
-                }
+                return wifiIpAddress.ToString();
             }
 
             return null;
         }
+
+        //private static string? GetWifiIpAddress()
+        //{
+        //    NetworkInterface wifiInterface = NetworkInterface.GetAllNetworkInterfaces()
+        //        .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);
+
+        //    if (wifiInterface != null)
+        //    {
+        //        IPInterfaceProperties ipProperties = wifiInterface.GetIPProperties();
+        //        IPAddress wifiIpAddress = ipProperties.UnicastAddresses
+        //            .FirstOrDefault(a => a.Address.AddressFamily == AddressFamily.InterNetwork)?.Address;
+
+        //        if (wifiIpAddress != null)
+        //        {
+        //            return wifiIpAddress.ToString();
+        //        }
+        //    }
+
+        //    return null;
+        //}
     }
 }
