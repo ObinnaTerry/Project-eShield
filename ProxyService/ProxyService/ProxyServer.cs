@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Net;
-using System.Text;
 using Serilog;
 
 namespace ProxyService
@@ -14,22 +11,38 @@ namespace ProxyService
 
         public static async Task StartProxyServerAsync()
         {
-            // Create a TCP listener on the desired proxy port
+            string wifiIpAddress = GetWifiIpAddress();
+            if (wifiIpAddress == null)
+            {
+                _logger.Error("Failed to retrieve Wi-Fi IP address.");
+                return;
+            }
+
             int proxyPort = 8080;
-            TcpListener listener = new TcpListener(IPAddress.Any, proxyPort);
+            string proxyUrl = $"http://{wifiIpAddress}:{proxyPort}/";
+            HttpListener listener = new HttpListener();
+            listener.Prefixes.Add(proxyUrl);
             listener.Start();
-            _logger.Information($"Proxy server started on port {proxyPort}");
+            _logger.Information($"Proxy server started on {proxyUrl}");
+
+            // Create an HTTP listener on the desired proxy port
+            //int proxyPort = 8080;
+            ////string proxyUrl = $"http://localhost:{proxyPort}/";
+            //string proxyUrl = $"http://*:{proxyPort}/";
+            //HttpListener listener = new HttpListener();
+            //listener.Prefixes.Add(proxyUrl);
+            //listener.Start();
+            //_logger.Information($"Proxy server started on {proxyUrl}");
 
             try
             {
                 while (true)
                 {
-                    // Accept incoming client connections asynchronously
-                    TcpClient client = await listener.AcceptTcpClientAsync();
+                    // Accept incoming HTTP client requests asynchronously
+                    HttpListenerContext context = await listener.GetContextAsync();
 
-
-                    // Handle each client connection concurrently
-                    Task.Run(() => HandleClientAsync(client));
+                    // Handle each client request concurrently
+                    Task.Run(() => HandleClientAsync(context));
                 }
             }
             finally
@@ -38,45 +51,74 @@ namespace ProxyService
             }
         }
 
-        private static async Task HandleClientAsync(TcpClient client)
+        private static async Task HandleClientAsync(HttpListenerContext context)
         {
-            using (client)
+            try
             {
-                try
+                string clientIpAddress = context.Request.RemoteEndPoint.Address.ToString();
+                _logger.Information(clientIpAddress);
+
+                // Read the request headers
+                WebHeaderCollection headers = (WebHeaderCollection)context.Request.Headers;
+
+                // Read specific header values
+                string userAgent = headers["User-Agent"];
+                string contentType = headers["Content-Type"];
+
+                // Read the destination URL and port
+                string destinationUrl = context.Request.Url.ToString();
+                int destinationPort = context.Request.Url.Port;
+
+                // Read the client's request body
+                using (StreamReader reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
                 {
-                    string clientIpAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                    string request = await reader.ReadToEndAsync();
 
-                    _logger.Information(clientIpAddress);
-
-                    // Read the client's request
-                    NetworkStream clientStream = client.GetStream();
-                    byte[] buffer = new byte[4096];
-                    int bytesRead = await clientStream.ReadAsync(buffer, 0, buffer.Length);
-                    string request = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-
-                    // Process the request and generate the response
-
-                    // Forward the request to the target server
-                    using (TcpClient targetClient = new TcpClient("targetserver.com", 80))
+                    // Create HttpClient instance
+                    using (HttpClient httpClient = new HttpClient())
                     {
-                        NetworkStream targetStream = targetClient.GetStream();
-
-                        // Send the request to the target server
-                        await targetStream.WriteAsync(buffer, 0, bytesRead);
+                        // Forward the request to the target server
+                        HttpResponseMessage response = await httpClient.PostAsync(destinationUrl, new StringContent(request));
 
                         // Read the response from the target server
-                        bytesRead = await targetStream.ReadAsync(buffer, 0, buffer.Length);
+                        byte[] responseBytes = await response.Content.ReadAsByteArrayAsync();
 
                         // Forward the response to the client
-                        await clientStream.WriteAsync(buffer, 0, bytesRead);
+                        context.Response.ContentLength64 = responseBytes.Length;
+                        await context.Response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length);
                     }
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the proxying process
+                Console.WriteLine($"Error: {ex.Message}");
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+            finally
+            {
+                context.Response.OutputStream.Close();
+            }
+        }
+
+        private static string? GetWifiIpAddress()
+        {
+            NetworkInterface wifiInterface = NetworkInterface.GetAllNetworkInterfaces()
+                .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);
+
+            if (wifiInterface != null)
+            {
+                IPInterfaceProperties ipProperties = wifiInterface.GetIPProperties();
+                IPAddress wifiIpAddress = ipProperties.UnicastAddresses
+                    .FirstOrDefault(a => a.Address.AddressFamily == AddressFamily.InterNetwork)?.Address;
+
+                if (wifiIpAddress != null)
                 {
-                    // Handle any exceptions that occur during the proxying process
-                    Console.WriteLine($"Error: {ex.Message}");
+                    return wifiIpAddress.ToString();
                 }
             }
+
+            return null;
         }
     }
 }
