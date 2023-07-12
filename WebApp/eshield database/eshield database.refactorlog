@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="3c3f465c-f249-4040-a28d-9ba47b348405" ChangeDateTime="07/12/2023 10:42:24">
+    <Property Name="ElementName" Value="[dbo].[Exam].[created_by]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Exam]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1bca3c6e-5464-40a3-a149-83c43f98e1b7" ChangeDateTime="07/12/2023 10:42:29">
+    <Property Name="ElementName" Value="[dbo].[Exam].[course_id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Exam]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CourseId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6baded2a-99bd-4768-9f72-ec024e333966" ChangeDateTime="07/12/2023 10:42:36">
+    <Property Name="ElementName" Value="[dbo].[Exam].[exam_date]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Exam]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ExamDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d6a12884-7ab6-4711-bcc6-0924bb68b5d4" ChangeDateTime="07/12/2023 10:42:41">
+    <Property Name="ElementName" Value="[dbo].[Exam].[start_time]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Exam]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StartTime" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b9886e37-022e-4ba2-b06c-3f7a38b0e115" ChangeDateTime="07/12/2023 10:42:49">
+    <Property Name="ElementName" Value="[dbo].[Exam].[end_time]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Exam]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EndTime" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="27c86b39-3c2f-4202-8734-fd82c08c271c" ChangeDateTime="07/12/2023 19:20:11">
+    <Property Name="ElementName" Value="[dbo].[VisitedSites].[URL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VisitedSites]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Website" />
+  </Operation>
+</Operations>
