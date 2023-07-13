@@ -24,8 +24,6 @@ public partial class EShieldContext : DbContext
 
     public virtual DbSet<Professor> Professors { get; set; }
 
-    public virtual DbSet<ProxyDatum> ProxyData { get; set; }
-
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<VisitedSite> VisitedSites { get; set; }
@@ -99,13 +97,6 @@ public partial class EShieldContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-        });
-
-        modelBuilder.Entity<ProxyDatum>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__ProxyDat__3214EC07EBBD1826");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Student>(entity =>
