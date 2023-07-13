@@ -58,6 +58,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
+    <Folder Include="publish" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Exam.sql" />
@@ -71,5 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="eshield database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="publish\eshield database.publish.xml" />
   </ItemGroup>
 </Project>
