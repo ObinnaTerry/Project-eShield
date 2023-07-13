@@ -18,21 +18,22 @@ namespace ProxyService
                 return;
             }
 
+            //int proxyPort = 8080;
+            //string proxyUrl = $"http://{wifiIpAddress}:{proxyPort}/";
+            //string proxyHttpsUrl = $"https://{wifiIpAddress}:{443}/";
+            //HttpListener listener = new HttpListener();
+            //listener.Prefixes.Add(proxyUrl);
+            //listener.Prefixes.Add(proxyHttpsUrl);
+            //listener.Start();
+            //_logger.Information($"Proxy server started on {proxyUrl}");
+
+            //Create an HTTP listener on the desired proxy port
             int proxyPort = 8080;
-            string proxyUrl = $"http://{wifiIpAddress}:{proxyPort}/";
+            string proxyUrl = $"https://*:{proxyPort}/";
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add(proxyUrl);
             listener.Start();
             _logger.Information($"Proxy server started on {proxyUrl}");
-
-            // Create an HTTP listener on the desired proxy port
-            //int proxyPort = 8080;
-            ////string proxyUrl = $"http://localhost:{proxyPort}/";
-            //string proxyUrl = $"http://*:{proxyPort}/";
-            //HttpListener listener = new HttpListener();
-            //listener.Prefixes.Add(proxyUrl);
-            //listener.Start();
-            //_logger.Information($"Proxy server started on {proxyUrl}");
 
             try
             {
@@ -71,7 +72,6 @@ namespace ProxyService
                 string scheme = requestUri.Scheme;
                 int destinationPort =  scheme == "http" ? 80 : 443;
                 string httpMethod = context.Request.HttpMethod;
-
 
                 using (StreamReader reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
                 {

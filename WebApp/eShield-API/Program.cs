@@ -9,7 +9,7 @@ namespace eShield_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("eShield_APIContextConnection") ?? throw new InvalidOperationException("Connection string 'eShield_APIContextConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("eShieldConnection") ?? throw new InvalidOperationException("Connection string 'eShieldConnection' not found.");
 
             builder.Services.AddDbContext<eShield_APIContext>(options => options.UseSqlServer(connectionString));
 
