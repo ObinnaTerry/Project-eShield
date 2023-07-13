@@ -13,6 +13,8 @@ public partial class VisitedSite
 
     public string Website { get; set; } = null!;
 
+    public DateTime CreateTime { get; set; }
+
     public virtual Exam Exam { get; set; } = null!;
 
     public virtual Student Student { get; set; } = null!;
