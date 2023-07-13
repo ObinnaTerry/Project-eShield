@@ -1,4 +1,6 @@
 using eShield.CoreData.Data.eShield;
+using eShield.CoreData.Data.Repos;
+using eShield.CoreData.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace eShield_API
@@ -18,6 +20,9 @@ namespace eShield_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IProxyDataRepo, ProxyDataRepo>();
+            builder.Services.AddScoped<ProxyDataRepo>();
 
             var app = builder.Build();
 
