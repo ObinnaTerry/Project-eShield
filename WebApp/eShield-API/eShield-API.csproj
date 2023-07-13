@@ -22,8 +22,12 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Entities\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eShield.CoreData\eShield.CoreData.csproj" />
   </ItemGroup>
 
 </Project>

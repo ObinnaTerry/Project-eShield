@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using eShield.CoreData.Entities;
 using Microsoft.EntityFrameworkCore;
-using eShield_API.Entities;
 
-namespace eShield_API.Data.eShield;
+namespace eShield.CoreData.Data.eShield;
 
 public partial class EShieldContext : DbContext
 {

@@ -1,4 +1,4 @@
-using eShield_API.Data.eShield;
+using eShield.CoreData.Data.eShield;
 using Microsoft.EntityFrameworkCore;
 
 namespace eShield_API
