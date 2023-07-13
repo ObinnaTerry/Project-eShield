@@ -67,7 +67,6 @@
     <Build Include="dbo\Tables\Professor.sql" />
     <Build Include="dbo\Tables\Course.sql" />
     <Build Include="dbo\Tables\ExamCode.sql" />
-    <Build Include="dbo\Tables\ProxyData.sql" />
     <Build Include="dbo\Tables\VisitedSites.sql" />
   </ItemGroup>
   <ItemGroup>
