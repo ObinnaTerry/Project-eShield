@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eShield_API.Entities;
+namespace eShield.CoreData.Entities;
 
 public partial class VisitedSite
 {

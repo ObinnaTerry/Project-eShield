@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eShield_API.Entities;
+namespace eShield.CoreData.Entities;
 
-public partial class Exam
+public partial class Student
 {
     public int Id { get; set; }
 
-    public int CreatedBy { get; set; }
+    public string FirstName { get; set; } = null!;
 
-    public int CourseId { get; set; }
+    public string LastName { get; set; } = null!;
 
-    public DateTime ExamDate { get; set; }
-
-    public TimeSpan StartTime { get; set; }
-
-    public TimeSpan EndTime { get; set; }
+    public string Email { get; set; } = null!;
 
     public virtual ICollection<ExamStudent> ExamStudents { get; set; } = new List<ExamStudent>();
 
