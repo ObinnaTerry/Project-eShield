@@ -13,7 +13,7 @@ namespace ProxyService
 
         public static async Task StartProxyServerAsync()
         {
-            string wifiIpAddress = GetWifiIpAddress();
+            string? wifiIpAddress = GetWifiIpAddress();
             if (wifiIpAddress == null)
             {
                 _logger.Error("Failed to retrieve Wi-Fi IP address.");
@@ -125,7 +125,7 @@ namespace ProxyService
             string hostName = Dns.GetHostName();
             IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
 
-            IPAddress wifiIpAddress = hostEntry.AddressList.FirstOrDefault(
+            IPAddress? wifiIpAddress = hostEntry.AddressList.FirstOrDefault(
                 address => address.AddressFamily == AddressFamily.InterNetwork);
 
             if (wifiIpAddress != null)
