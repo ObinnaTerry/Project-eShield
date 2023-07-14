@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using eShield_API.DTOs;
+using ProxyService.Utils;
 using Serilog;
 
 namespace ProxyService
@@ -17,23 +19,22 @@ namespace ProxyService
                 _logger.Error("Failed to retrieve Wi-Fi IP address.");
                 return;
             }
-
-            //int proxyPort = 8080;
-            //string proxyUrl = $"http://{wifiIpAddress}:{proxyPort}/";
-            //string proxyHttpsUrl = $"https://{wifiIpAddress}:{443}/";
-            //HttpListener listener = new HttpListener();
-            //listener.Prefixes.Add(proxyUrl);
-            //listener.Prefixes.Add(proxyHttpsUrl);
-            //listener.Start();
-            //_logger.Information($"Proxy server started on {proxyUrl}");
-
-            //Create an HTTP listener on the desired proxy port
             int proxyPort = 8080;
-            string proxyUrl = $"https://*:{proxyPort}/";
+            string proxyUrl = $"http://localhost:{proxyPort}/";
+            //string proxyHttpsUrl = $"https://localhost:{proxyPort}/";
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add(proxyUrl);
+            //listener.Prefixes.Add(proxyHttpsUrl);
             listener.Start();
             _logger.Information($"Proxy server started on {proxyUrl}");
+
+            //Create an HTTP listener on the desired proxy port
+            //int proxyPort = 8080;
+            //string proxyUrl = $"https://*:{proxyPort}/";
+            //HttpListener listener = new HttpListener();
+            //listener.Prefixes.Add(proxyUrl);
+            //listener.Start();
+            //_logger.Information($"Proxy server started on {proxyUrl}");
 
             try
             {
@@ -73,17 +74,19 @@ namespace ProxyService
                 int destinationPort =  scheme == "http" ? 80 : 443;
                 string httpMethod = context.Request.HttpMethod;
 
+                string targetUrl = destinationPort != -1 ? $"{requestUri.Scheme}://{destinationHost}:{destinationPort}{requestUri.PathAndQuery}" :
+                                                $"{requestUri.Scheme}://{destinationHost}{requestUri.PathAndQuery}";
+
+                VisitedSiteDTO visitedSite = new VisitedSiteDTO(targetUrl, DateReader.GetDateTime("Central European Standard Time"));
+                CacheReader.Update(CacheRepo.ProxyStatsCache, ConstantNames.StatsKeyName, visitedSite);
+
                 using (StreamReader reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
                 {
                     string request = await reader.ReadToEndAsync();
 
                     // Create HttpClient instance
                     using (HttpClient httpClient = new HttpClient())
-                    {
-                        // Construct the target URL with the extracted destination host and port
-                        string targetUrl = destinationPort != -1 ? $"{requestUri.Scheme}://{destinationHost}:{destinationPort}{requestUri.PathAndQuery}" :
-                                                $"{requestUri.Scheme}://{destinationHost}{requestUri.PathAndQuery}";
-
+                    {                        
                         HttpResponseMessage response;
                         if (httpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
                         {
