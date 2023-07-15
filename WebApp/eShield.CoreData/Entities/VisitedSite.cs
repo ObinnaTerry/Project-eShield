@@ -9,6 +9,8 @@ public partial class VisitedSite
 
     public int StudentId { get; set; }
 
+    public string Macaddress { get; set; } = null!;
+
     public int ExamId { get; set; }
 
     public string Website { get; set; } = null!;
