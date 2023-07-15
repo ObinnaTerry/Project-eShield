@@ -24,6 +24,8 @@ public partial class EShieldContext : DbContext
 
     public virtual DbSet<ExamStudent> ExamStudents { get; set; }
 
+    public virtual DbSet<FlaggedSite> FlaggedSites { get; set; }
+
     public virtual DbSet<Professor> Professors { get; set; }
 
     public virtual DbSet<Student> Students { get; set; }
@@ -81,6 +83,16 @@ public partial class EShieldContext : DbContext
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ExamStudents_Student");
+        });
+
+        modelBuilder.Entity<FlaggedSite>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__FlaggedS__3214EC07363BF48B");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Website)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Professor>(entity =>
