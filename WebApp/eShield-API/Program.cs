@@ -1,6 +1,7 @@
 using eShield.CoreData.Data.eShield;
 using eShield.CoreData.Data.Repos;
 using eShield.CoreData.Interfaces;
+using eShield_API.DataService;
 using Microsoft.EntityFrameworkCore;
 
 namespace eShield_API
@@ -23,6 +24,9 @@ namespace eShield_API
 
             builder.Services.AddScoped<IProxyDataRepo, ProxyDataRepo>();
             builder.Services.AddScoped<ProxyDataRepo>();
+            builder.Services.AddScoped<IExamCodeRepo, ExamCodeRepo>();
+            builder.Services.AddScoped<IExamRepo, ExamRepo>();
+            builder.Services.AddScoped<ExamDataService>();
 
             var app = builder.Build();
 
