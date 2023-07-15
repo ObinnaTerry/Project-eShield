@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProxyService.Services;
 using Serilog;
 
 namespace ProxyService
@@ -37,8 +35,7 @@ namespace ProxyService
 
             var host = Host.CreateDefaultBuilder() // Initialising the Host 
                         .ConfigureServices((context, services) => { // Adding the DI container for configuration
-                            services.AddHttpClient<HttpClientService>();
-                            services.AddHostedService<UsageStatsBackgroundService>();
+
                         })
                         .UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)) // Add Serilog
                         .Build(); // Build the Host
