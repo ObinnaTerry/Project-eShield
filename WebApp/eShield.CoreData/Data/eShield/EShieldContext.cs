@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using eShield_API.Entities;
 using eShield.CoreData.Entities;
 
-namespace eShield.CoreData.Data.eShield;
+namespace eShield_API.Data.eShield;
 
 public partial class EShieldContext : DbContext
 {
@@ -94,7 +93,7 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<NetworkInfo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__NetworkI__3214EC07E1B0D898");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07F9E83E78");
 
             entity.ToTable("NetworkInfo");
 
@@ -106,6 +105,9 @@ public partial class EShieldContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("MACAddress");
+            entity.Property(e => e.StudentId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Professor>(entity =>
