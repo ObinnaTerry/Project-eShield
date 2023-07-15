@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using eShield.CoreData.Entities;
 using Microsoft.EntityFrameworkCore;
+using eShield_API.Entities;
+using eShield.CoreData.Entities;
 
 namespace eShield.CoreData.Data.eShield;
 
@@ -26,6 +27,8 @@ public partial class EShieldContext : DbContext
 
     public virtual DbSet<FlaggedSite> FlaggedSites { get; set; }
 
+    public virtual DbSet<NetworkInfo> NetworkInfos { get; set; }
+
     public virtual DbSet<Professor> Professors { get; set; }
 
     public virtual DbSet<Student> Students { get; set; }
@@ -36,11 +39,10 @@ public partial class EShieldContext : DbContext
     {
         modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Course__3214EC078BD1E140");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07227809AA");
 
             entity.ToTable("Course");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CourseName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -48,21 +50,19 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<Exam>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Exam__3214EC07A52B7122");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0702230A9F");
 
             entity.ToTable("Exam");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ExamDate).HasColumnType("date");
         });
 
         modelBuilder.Entity<ExamCode>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ExamCode__3214EC0767C63374");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07AF10B563");
 
             entity.ToTable("ExamCode");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Code)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -70,9 +70,7 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<ExamStudent>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ExamStud__3214EC078009A461");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC076A9B19E6");
 
             entity.HasOne(d => d.Exam).WithMany(p => p.ExamStudents)
                 .HasForeignKey(d => d.ExamId)
@@ -87,21 +85,35 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<FlaggedSite>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__FlaggedS__3214EC07363BF48B");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07B6A2D292");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Website)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<NetworkInfo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__NetworkI__3214EC07E1B0D898");
+
+            entity.ToTable("NetworkInfo");
+
+            entity.Property(e => e.Ipaddress)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IPAddress");
+            entity.Property(e => e.Macaddress)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("MACAddress");
+        });
+
         modelBuilder.Entity<Professor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Professo__3214EC079ED3A478");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC076204A421");
 
             entity.ToTable("Professor");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -115,11 +127,10 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Student__3214EC0720628E92");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07BF63D989");
 
             entity.ToTable("Student");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -133,9 +144,8 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<VisitedSite>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC078DE37542");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07F09FEF5C");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Macaddress)
                 .HasMaxLength(50)
                 .IsUnicode(false)

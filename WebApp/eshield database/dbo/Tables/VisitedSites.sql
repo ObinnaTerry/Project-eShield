@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[VisitedSites]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [StudentId] INT NOT NULL,
     [MACAddress] VARCHAR(50) NOT NULL, 
     [ExamId] INT NOT NULL, 
