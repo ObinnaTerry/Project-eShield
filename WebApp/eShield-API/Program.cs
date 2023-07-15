@@ -1,7 +1,6 @@
-using eShield.CoreData.Data.eShield;
-using eShield.CoreData.Data.Repos;
-using eShield.CoreData.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using eShield_API.Data;
 
 namespace eShield_API
 {
@@ -12,7 +11,9 @@ namespace eShield_API
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("eShieldConnection") ?? throw new InvalidOperationException("Connection string 'eShieldConnection' not found.");
 
-            builder.Services.AddDbContext<EShieldContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<eShield_APIContext>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<eShield_APIContext>();
 
             // Add services to the container.
 
@@ -20,9 +21,6 @@ namespace eShield_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            builder.Services.AddScoped<IProxyDataRepo, ProxyDataRepo>();
-            builder.Services.AddScoped<ProxyDataRepo>();
 
             var app = builder.Build();
 

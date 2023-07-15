@@ -3,8 +3,6 @@ using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using ProxyService.Utils;
-using eShield_API.DTOs;
 
 namespace ProxyService
 {
@@ -12,8 +10,6 @@ namespace ProxyService
     {
         static async Task Main(string[] args)
         {
-            CacheReader.Set(CacheRepo.ProxyStatsCache, ConstantNames.StatsKeyName, new List<VisitedSiteDTO>());
-
             var host = StartupConfig.AppStartup();
             await host.StartAsync();
 
