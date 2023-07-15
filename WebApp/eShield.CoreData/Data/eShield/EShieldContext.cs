@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using eShield.CoreData.Entities;
 using Microsoft.EntityFrameworkCore;
-using eShield.CoreData.Entities;
 
-namespace eShield_API.Data.eShield;
+namespace eShield.CoreData.Data.eShield;
 
 public partial class EShieldContext : DbContext
 {
@@ -105,9 +103,16 @@ public partial class EShieldContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("MACAddress");
-            entity.Property(e => e.StudentId)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+
+            entity.HasOne(d => d.Exam).WithMany(p => p.NetworkInfos)
+                .HasForeignKey(d => d.ExamId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NetworkInfo_Exam");
+
+            entity.HasOne(d => d.Student).WithMany(p => p.NetworkInfos)
+                .HasForeignKey(d => d.StudentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NetworkInfo_Student");
         });
 
         modelBuilder.Entity<Professor>(entity =>

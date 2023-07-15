@@ -19,5 +19,7 @@ public partial class Exam
 
     public virtual ICollection<ExamStudent> ExamStudents { get; set; } = new List<ExamStudent>();
 
+    public virtual ICollection<NetworkInfo> NetworkInfos { get; set; } = new List<NetworkInfo>();
+
     public virtual ICollection<VisitedSite> VisitedSites { get; set; } = new List<VisitedSite>();
 }
