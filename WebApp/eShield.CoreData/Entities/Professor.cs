@@ -12,4 +12,5 @@ public partial class Professor
     public string LastName { get; set; } = null!;
 
     public string Email { get; set; } = null!;
+    public virtual Course Course { get; set; }
 }
