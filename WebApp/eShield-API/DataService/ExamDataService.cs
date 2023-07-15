@@ -43,11 +43,10 @@ namespace eShield_API.DataService
             return exam;
         }
 
-        public List<ExamDTO> ReadAll(int courseId)
+        public List<ExamDTO> ReadAll(int profId)
         {
-            //Todo: The filter condition should be changed to prof id
 
-            IQueryable<Exam> exams = _examRepo.GetAll().Where(x => x.CourseId == courseId);
+            IQueryable<Exam> exams = _examRepo.GetAll().Where(x => x.CreatedBy == profId);
 
             List<ExamDTO> examDTOs = new List<ExamDTO>();
 
