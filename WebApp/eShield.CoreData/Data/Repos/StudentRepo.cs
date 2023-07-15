@@ -4,11 +4,11 @@ using eShield.CoreData.Interfaces;
 
 namespace eShield.CoreData.Data.Repos
 {
-    public class ExamRepo : GenericRepo<Exam>, IDisposable, IExamRepo
+    public class StudentRepo : GenericRepo<Student>, IDisposable, IStudentRepo
     {
         private readonly EShieldContext _context;
 
-        public ExamRepo(EShieldContext context) : base(context)
+        public StudentRepo(EShieldContext context) : base(context)
         {
             _context = context;
         }
@@ -32,7 +32,6 @@ namespace eShield.CoreData.Data.Repos
 
             disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);

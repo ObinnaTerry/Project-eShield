@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[ExamStudents]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [StudentId] INT NOT NULL, 
     [ExamId] INT NOT NULL, 
     CONSTRAINT [FK_ExamStudents_Student] FOREIGN KEY ([StudentId]) REFERENCES [Student]([Id]), 

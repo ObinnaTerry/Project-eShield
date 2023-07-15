@@ -4,22 +4,20 @@ using eShield.CoreData.Interfaces;
 
 namespace eShield.CoreData.Data.Repos
 {
-    public class ExamRepo : GenericRepo<Exam>, IDisposable, IExamRepo
+    public class NetworkInfoRepo : GenericRepo<NetworkInfo>, IDisposable, INetworkInfoRepo
     {
         private readonly EShieldContext _context;
 
-        public ExamRepo(EShieldContext context) : base(context)
+        public NetworkInfoRepo(EShieldContext context) : base(context)
         {
             _context = context;
         }
-
         public void Save()
         {
             _context.SaveChanges();
         }
 
         private bool disposed = false;
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -29,7 +27,6 @@ namespace eShield.CoreData.Data.Repos
                     _context.Dispose();
                 }
             }
-
             disposed = true;
         }
 
@@ -38,5 +35,6 @@ namespace eShield.CoreData.Data.Repos
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

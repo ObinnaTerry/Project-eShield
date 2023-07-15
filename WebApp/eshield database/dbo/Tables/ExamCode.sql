@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[ExamCode]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [ExamId] INT NOT NULL, 
     [Code] VARCHAR(50) NOT NULL
 )
