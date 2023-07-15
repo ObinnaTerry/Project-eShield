@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[NetworkInfo]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [IPAddress] VARCHAR(50) NOT NULL, 
+    [MACAddress] VARCHAR(50) NOT NULL
+)
