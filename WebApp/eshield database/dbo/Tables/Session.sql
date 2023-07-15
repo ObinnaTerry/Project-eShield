@@ -1,0 +1,9 @@
+﻿CREATE TABLE [Session]
+(
+	SessionCode INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	UserId INT NOT NULL,
+	DateOfSession DATE,
+	StartTime TIMESTAMP,
+	EndTime TIMESTAMP,
+	FOREIGN KEY (UserId) REFERENCES [User](UserId)
+);

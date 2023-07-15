@@ -76,4 +76,9 @@
   <ItemGroup>
     <None Include="publish\eshield database.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\Session.sql" />
+    <Build Include="dbo\Tables\Website.sql" />
+  </ItemGroup>
 </Project>
