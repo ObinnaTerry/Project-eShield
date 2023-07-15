@@ -1,4 +1,6 @@
-﻿using eShield.CoreData.Entities;
+﻿using System;
+using System.Collections.Generic;
+using eShield.CoreData.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace eShield.CoreData.Data.eShield;
@@ -119,9 +121,13 @@ public partial class EShieldContext : DbContext
 
         modelBuilder.Entity<VisitedSite>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__VisitedS__3214EC076C01D123");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC078DE37542");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Macaddress)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("MACAddress");
             entity.Property(e => e.Website)
                 .HasMaxLength(50)
                 .IsUnicode(false);
