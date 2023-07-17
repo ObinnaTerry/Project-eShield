@@ -4,13 +4,12 @@ using eShield.CoreData.Interfaces;
 
 namespace eShield.CoreData.Data.Repos
 {
-
-    public class CourseRepo : GenericRepo<Course>, IDisposable, ICourseRepo
-
-        {
+    public class ProfessorRepo : GenericRepo<Professor>, IDisposable, IProfessorRepo
+    {
         private readonly EShieldContext _context;
+        private bool disposed;
 
-        public CourseRepo(EShieldContext context) : base(context)
+        public ProfessorRepo(EShieldContext context) : base(context)
         {
             _context = context;
         }
@@ -20,9 +19,7 @@ namespace eShield.CoreData.Data.Repos
             _context.SaveChanges();
         }
 
-        private bool disposed = false;
-
-        public virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
@@ -30,9 +27,9 @@ namespace eShield.CoreData.Data.Repos
                 {
                     _context.Dispose();
                 }
-            }
 
-            disposed = true;
+                disposed = true;
+            }
         }
 
         public void Dispose()
@@ -42,4 +39,3 @@ namespace eShield.CoreData.Data.Repos
         }
     }
 }
-

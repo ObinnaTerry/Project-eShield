@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using eShield.CoreData.Entities;
 
 namespace eShield.CoreData.Data.eShield;
