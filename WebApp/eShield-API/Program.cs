@@ -3,6 +3,8 @@ using eShield.CoreData.Data.Repos;
 using eShield.CoreData.Interfaces;
 using eShield_API.DataService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace eShield_API
 {
@@ -32,8 +34,18 @@ namespace eShield_API
             builder.Services.AddScoped<NetworkInfoDataService>();
             builder.Services.AddScoped<ProxyDataService>();
 
+            builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+
+                ILogger<Program> _logger = services.GetService<ILogger<Program>>() ?? throw new Exception("Logger is null");
+
+                _logger.LogInformation("Application starting");
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
