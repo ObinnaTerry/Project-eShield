@@ -1,11 +1,6 @@
 ﻿using eShield.CoreData.Data.eShield;
 using eShield.CoreData.Entities;
 using eShield.CoreData.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eShield.CoreData.Data.Repos
 {

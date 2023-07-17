@@ -18,9 +18,7 @@ namespace eShield_API.DataService
         {
             Course course = new Course()
             {
-                CourseName = courseDTO.CourseName,
-                ProfessorId = courseDTO.ProfessorId
-                
+                CourseName = courseDTO.CourseName!,
             };
 
             _courseRepo.Insert(course);
@@ -29,20 +27,50 @@ namespace eShield_API.DataService
             return course;
         }
 
-          public CourseDTO  ReadByProfId(int profid)
+        public CourseDTO?  ReadId(int id)
         {
-            Course? course = _courseRepo.GetAll().Where(x => x.ProfessorId == profid).FirstOrDefault();
+            Course? course = _courseRepo.GetAll().Where(x => x.Id == id).FirstOrDefault();
 
             if (course == null)
             {
                 return null;
             }
 
-            CourseDTO courseDTO = new CourseDTO(course.Id, course.CourseName, course.ProfessorId);
+            CourseDTO courseDTO = new CourseDTO(course.Id, course.CourseName);
 
             return courseDTO;
         }
 
+        public void Delete(int id)
+        {
+            _courseRepo.Delete(id);
+        }
+
+        public void Update(int id, CourseDTO courseDTO)
+        {
+            Course course = new Course
+            {
+                Id = id,
+                CourseName = courseDTO.CourseName!
+            };
+
+            _courseRepo.Update(course);
+            _courseRepo.Save();
+        }
+
+        public List<CourseDTO> ReadAll()
+        {
+           IQueryable<Course> courses = _courseRepo.GetAll();
+
+            List<CourseDTO> courseDTOs = new List<CourseDTO>();
+
+            foreach (var course in courses)
+            {
+                courseDTOs.Add(new CourseDTO(course.Id, course.CourseName));
+            }
+
+            return courseDTOs;
+        }
      
     }
 }
