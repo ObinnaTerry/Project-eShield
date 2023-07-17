@@ -3,6 +3,7 @@ using eShield.CoreData.Data.Repos;
 using eShield.CoreData.Interfaces;
 using eShield_API.DataService;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace eShield_API
 {
@@ -32,6 +33,7 @@ namespace eShield_API
             builder.Services.AddScoped<NetworkInfoDataService>();
             builder.Services.AddScoped<ProxyDataService>();
 
+            builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
             var app = builder.Build();
 
