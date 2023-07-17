@@ -27,6 +27,11 @@ namespace eShield_API
             builder.Services.AddScoped<IExamCodeRepo, ExamCodeRepo>();
             builder.Services.AddScoped<IExamRepo, ExamRepo>();
             builder.Services.AddScoped<ExamDataService>();
+            builder.Services.AddScoped<IStudentRepo, StudentRepo>();
+            builder.Services.AddScoped<INetworkInfoRepo, INetworkInfoRepo>();
+            builder.Services.AddScoped<NetworkInfoDataService>();
+            builder.Services.AddScoped<ProxyDataService>();
+
 
             var app = builder.Build();
 
