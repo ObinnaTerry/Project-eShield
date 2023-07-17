@@ -33,6 +33,10 @@ namespace eShield_API
             builder.Services.AddScoped<INetworkInfoRepo, NetworkInfoRepo>();
             builder.Services.AddScoped<NetworkInfoDataService>();
             builder.Services.AddScoped<ProxyDataService>();
+            builder.Services.AddScoped<IProfessorRepo, ProfessorRepo>();
+            builder.Services.AddScoped<ICourseRepo, CourseRepo>();
+            builder.Services.AddScoped<CourseDataService>();
+            builder.Services.AddScoped<ProfessorDataService>();
 
             builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
