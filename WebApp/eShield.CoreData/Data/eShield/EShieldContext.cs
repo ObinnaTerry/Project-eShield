@@ -1,5 +1,5 @@
-﻿using eShield.CoreData.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using eShield.CoreData.Entities;
 
 namespace eShield.CoreData.Data.eShield;
 
@@ -52,6 +52,16 @@ public partial class EShieldContext : DbContext
             entity.ToTable("Exam");
 
             entity.Property(e => e.ExamDate).HasColumnType("date");
+
+            entity.HasOne(d => d.Course).WithMany(p => p.Exams)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Exam_Course");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Exams)
+                .HasForeignKey(d => d.CreatedBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Exam_Professor");
         });
 
         modelBuilder.Entity<ExamCode>(entity =>
@@ -130,6 +140,11 @@ public partial class EShieldContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Course).WithMany(p => p.Professors)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Professor_Course");
         });
 
         modelBuilder.Entity<Student>(entity =>

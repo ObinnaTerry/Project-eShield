@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace eShield.CoreData.Data.Repos
 {
-    
-        public class CourseRepo : GenericRepo<Course>, IDisposable, ICourseRepo
+
+    public class CourseRepo : GenericRepo<Course>, IDisposable, ICourseRepo
 
         {
         private readonly EShieldContext _context;

@@ -20,7 +20,7 @@ namespace eShield.CoreData.Data.Repos
 
         private bool disposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
