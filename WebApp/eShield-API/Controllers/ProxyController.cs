@@ -35,9 +35,17 @@ namespace eShield_API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] VisitedSiteDTO visitedSite)
         {
-            _proxyDataService.Post(visitedSite);
+            _proxyDataService.Post(visitedSite, IpAddress());
 
             return Ok();
+        }
+
+        private string? IpAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }
