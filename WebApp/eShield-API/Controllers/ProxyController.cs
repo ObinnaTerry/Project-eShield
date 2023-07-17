@@ -25,10 +25,10 @@ namespace eShield_API.Controllers
         }
 
         // GET api/<ProxyController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("{examid}")]
+        public IActionResult Get(int examid)
         {
-            return Ok(_proxyDataService.Get(id));
+            return Ok(_proxyDataService.Get(examid));
         }
 
         // POST api/<ProxyController>

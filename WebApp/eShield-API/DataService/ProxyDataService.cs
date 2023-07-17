@@ -16,7 +16,7 @@ namespace eShield_API.DataService
             _networkInfoRepo = networkInfoRepo;
         }
 
-        public List<VisitedSiteDashboardDTO> Get(int id)
+        public List<VisitedSiteDashboardDTO> Get(int examid)
         {
             //TODO: Potential issue for users with only 1 record. this will cuz the second most recent record to return null
             // which will break the code. needs to handle this situation correctly
@@ -24,15 +24,15 @@ namespace eShield_API.DataService
             List<VisitedSiteDashboardDTO> visitedSites = new List<VisitedSiteDashboardDTO>();
 
             List<VisitedSite> mostRecent = _proxyDataRepo.GetAll()
-                .Where(x => x.ExamId == id)
+                .Where(x => x.ExamId == examid)
                 .GroupBy(x => x.StudentId)
                 .Select(group => group.OrderByDescending(site => site.CreateTime).First()).ToList();
 
             var nextRecent = _proxyDataRepo.GetAll()
-            .Where(x => x.ExamId == id)
-            .GroupBy(x => x.StudentId)
-            .Select(group => group.OrderByDescending(site => site.CreateTime).Skip(1).Take(1))
-            .SelectMany(inner => inner).ToList();
+                .Where(x => x.ExamId == examid)
+                .GroupBy(x => x.StudentId)
+                .Select(group => group.OrderByDescending(site => site.CreateTime).Skip(1).Take(1))
+                .SelectMany(inner => inner).ToList();
 
             foreach (var latest in mostRecent)
             {
