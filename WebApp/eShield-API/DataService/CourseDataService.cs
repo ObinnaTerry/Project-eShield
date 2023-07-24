@@ -44,6 +44,7 @@ namespace eShield_API.DataService
         public void Delete(int id)
         {
             _courseRepo.Delete(id);
+            _courseRepo.Save();
         }
 
         public void Update(int id, CourseDTO courseDTO)
