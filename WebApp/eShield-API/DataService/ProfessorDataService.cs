@@ -32,10 +32,7 @@ namespace eShield_API.DataService
                 LastName = professor.LastName,
                 Email = professor.Email,
                 FirstName = professor.FirstName,
-                Course = new CourseDTO(professor.Id, professor.Course.CourseName),
-                Exams = professor.Exams.Select(exam =>
-                new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
-                ).ToList()
+                CourseId = professor.CourseId
             };
         }
 
