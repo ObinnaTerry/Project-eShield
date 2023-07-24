@@ -20,6 +20,7 @@ namespace eShield_API.DataService
                 FirstName = professorDTOIn.FirstName,
                 LastName = professorDTOIn.LastName,
                 Email = professorDTOIn.Email,
+                CourseId = professorDTOIn.CourseId,
                 //Course = professorDTOIn.Course,
             };
 
@@ -92,6 +93,7 @@ namespace eShield_API.DataService
         public void Delete(int id)
         {
             _professorRepo.Delete(id);
+            _professorRepo.Save();
         }
     }
 }

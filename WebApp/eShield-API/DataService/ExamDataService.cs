@@ -98,6 +98,7 @@ namespace eShield_API.DataService
         public void Delete(int id)
         {
             _examRepo.Delete(id);
+            _examRepo.Save();
         }
     }
 }
