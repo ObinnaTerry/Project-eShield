@@ -6,18 +6,18 @@ namespace eShield_API.DTOs
     public class CourseDTO
     {
 
-        public int _id;
+        private int _id;
 
-        public string? _courseName;
+        private string? courseName;
 
         public CourseDTO(int id, string courseName)
         {
             _id = id;
-            _courseName = courseName;
+            CourseName = courseName;
         }
-        public int Id { get; set; }
 
-        public string? CourseName { get; set; }
+        public string? CourseName { get => courseName; set => courseName = value; }
+        public int Id { get => _id; set => _id = value; }
     }
 }
 
