@@ -58,6 +58,7 @@ namespace eShield_API
             }
 
             app.UseHttpsRedirection();
+            app.UseCors();
 
             app.UseAuthorization();
 

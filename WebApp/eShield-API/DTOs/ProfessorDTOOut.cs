@@ -14,7 +14,7 @@ namespace eShield_API.DTOs
 
         public int CourseId { get; set; }
 
-        public virtual CourseDTO Course { get; set; } = null!;
+        public virtual CourseDTO? Course { get; set; } = null!;
 
         public virtual ICollection<ExamDTO> Exams { get; set; } = new List<ExamDTO>();
     }
