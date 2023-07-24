@@ -34,7 +34,7 @@ namespace eShield.CoreData.Data.Repos
             }
         }
 
-        public override async Task<Professor?> GetByIDAsync(int id)
+        public override async Task<Professor?> GetByIDAsync(int? id)
         {
             return await _context.Professors
                 .Where(x => x.Id == id)
@@ -42,6 +42,14 @@ namespace eShield.CoreData.Data.Repos
                 .Include(_ => _.Exams)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync();
+        }
+
+        public override IQueryable<Professor> GetAll()
+        {
+            return _context.Professors
+                .Include(_ => _.Course)
+                .Include(_ => _.Exams)
+                .AsSplitQuery();
         }
 
         public void Dispose()

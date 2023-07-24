@@ -40,7 +40,7 @@ namespace eShield.CoreData.Data.Repos
             return _dbSet.AsQueryable();
         }
 
-        public async virtual Task<T?> GetByIDAsync(int id)
+        public async virtual Task<T?> GetByIDAsync(int? id)
         {
             return await _dbSet.FindAsync(id);
         }
