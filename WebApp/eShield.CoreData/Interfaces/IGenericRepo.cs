@@ -5,7 +5,7 @@
         void Delete(object id);
         void Delete(T? entityToDelete);
         IQueryable<T> GetAll();
-        Task<T?> GetByIDAsync(int? id);
+        Task<T?> GetByIDAsync(int id);
         void Insert(T entity);
         void Update(T entityToUpdate);
     }

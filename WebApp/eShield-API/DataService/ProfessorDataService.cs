@@ -33,7 +33,10 @@ namespace eShield_API.DataService
                 LastName = professor.LastName,
                 Email = professor.Email,
                 FirstName = professor.FirstName,
-                Course = professor.Course
+                Course = new CourseDTO(professor.Id, professor.Course.CourseName),
+                Exams = professor.Exams.Select(exam =>
+                new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
+                ).ToList()
             };
         }
 
@@ -45,13 +48,17 @@ namespace eShield_API.DataService
             {
                 return null;
             }
+
             return new ProfessorDTOOut
             {
                 Id = id,
                 LastName = professor.LastName,
                 Email = professor.Email,
                 FirstName = professor.FirstName,
-                Course = professor.Course
+                Course = new CourseDTO(professor.Id, professor.Course.CourseName),
+                Exams = professor.Exams.Select(exam => 
+                new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
+                ).ToList()
             };
         }
 
@@ -68,7 +75,10 @@ namespace eShield_API.DataService
                     LastName = professor.LastName, 
                     Email = professor.Email,
                     FirstName = professor.FirstName,
-                    Course = professor.Course
+                    Course = new CourseDTO(professor.Id, professor.Course.CourseName),
+                    Exams = professor.Exams.Select(exam => 
+                    new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
+                    ).ToList()
                 });
             }
 

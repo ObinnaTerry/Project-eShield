@@ -1,6 +1,8 @@
 ﻿using eShield.CoreData.Data.eShield;
 using eShield.CoreData.Entities;
 using eShield.CoreData.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace eShield.CoreData.Data.Repos
 {
@@ -30,6 +32,16 @@ namespace eShield.CoreData.Data.Repos
 
                 disposed = true;
             }
+        }
+
+        public override async Task<Professor?> GetByIDAsync(int id)
+        {
+            return await _context.Professors
+                .Where(x => x.Id == id)
+                .Include(x => x.Course)
+                .Include(_ => _.Exams)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync();
         }
 
         public void Dispose()
