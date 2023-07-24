@@ -39,6 +39,15 @@ namespace eShield_API
 
             builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod()
+                );
+            });
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -58,7 +67,6 @@ namespace eShield_API
             }
 
             app.UseHttpsRedirection();
-            app.UseCors();
 
             app.UseAuthorization();
 
