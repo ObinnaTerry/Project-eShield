@@ -3,7 +3,6 @@ using eShield.CoreData.Data.Repos;
 using eShield.CoreData.Interfaces;
 using eShield_API.DataService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace eShield_API

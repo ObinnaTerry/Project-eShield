@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShield-API", "eShield-API\
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "eshield database", "eshield database\eshield database.sqlproj", "{2CB98176-C57A-4E3A-AD79-43C85CD84CF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShield.CoreData", "eShield.CoreData\eShield.CoreData.csproj", "{4D0CC98C-6641-43DC-8773-89511987C731}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShield.CoreData", "eShield.CoreData\eShield.CoreData.csproj", "{4D0CC98C-6641-43DC-8773-89511987C731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShield.Test", "eShield.Test\eShield.Test.csproj", "{9FFA7888-3F37-4909-AFD6-9D60526D731D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{4D0CC98C-6641-43DC-8773-89511987C731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D0CC98C-6641-43DC-8773-89511987C731}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D0CC98C-6641-43DC-8773-89511987C731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFA7888-3F37-4909-AFD6-9D60526D731D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFA7888-3F37-4909-AFD6-9D60526D731D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFA7888-3F37-4909-AFD6-9D60526D731D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFA7888-3F37-4909-AFD6-9D60526D731D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
