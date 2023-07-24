@@ -20,7 +20,7 @@ namespace eShield_API.DataService
                 FirstName = professorDTOIn.FirstName,
                 LastName = professorDTOIn.LastName,
                 Email = professorDTOIn.Email,
-                Course = professorDTOIn.Course,
+                //Course = professorDTOIn.Course,
             };
 
             _professorRepo.Insert(professor);
@@ -82,7 +82,7 @@ namespace eShield_API.DataService
                 LastName = professorDTOIn.LastName,
                 Email = professorDTOIn.Email,
                 FirstName = professorDTOIn.FirstName,
-                Course = professorDTOIn.Course
+                //Course = professorDTOIn.Course
             };
 
             _professorRepo.Update(professor);
