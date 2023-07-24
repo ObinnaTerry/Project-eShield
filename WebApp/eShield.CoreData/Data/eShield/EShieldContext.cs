@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using eShield.CoreData.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace eShield.CoreData.Data.eShield;
 

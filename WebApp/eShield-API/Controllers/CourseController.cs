@@ -23,6 +23,11 @@ namespace eShield_API.Controllers
             return Ok(_courseDataService.ReadAll());
         }
 
+        [HttpPost]
+        public IActionResult Post(CourseDTO courseDTO)
+        {
+            return Ok(_courseDataService.Create(courseDTO));
+        }
 
         // GET api/<CourseController>/5
         [HttpGet("{id}")]

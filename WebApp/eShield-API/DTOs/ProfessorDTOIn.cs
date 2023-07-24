@@ -12,6 +12,6 @@ namespace eShield_API.DTOs
 
         public int CourseId { get; set; }
 
-        public virtual Course Course { get; set; } = null!;
+        //public virtual Course Course { get; set; } = null!;
     }
 }
