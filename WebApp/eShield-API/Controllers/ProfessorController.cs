@@ -49,9 +49,9 @@ namespace eShield_API.Controllers
 
         // PUT api/<ProfessorController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ProfessorDTOIn professorDTOIn)
+        public async Task<IActionResult> Put(int id, [FromBody] ProfessorDTOIn professorDTOIn)
         {
-            _professorDataService.Update(id, professorDTOIn);
+            await _professorDataService.UpdateAsync(id, professorDTOIn);
 
             return Ok();
         }

@@ -51,7 +51,8 @@ namespace eShield_API.DataService
                 LastName = professor.LastName,
                 Email = professor.Email,
                 FirstName = professor.FirstName,
-                Course = professor.Course != null ? new CourseDTO(professor.Id, professor.Course.CourseName) : null,
+                CourseId = professor.CourseId,
+                Course = professor.Course != null ? new CourseDTO(professor.Course.Id, professor.Course.CourseName) : null,
                 Exams = professor.Exams.Select(exam => 
                 new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
                 ).ToList()
@@ -71,7 +72,8 @@ namespace eShield_API.DataService
                     LastName = professor.LastName, 
                     Email = professor.Email,
                     FirstName = professor.FirstName,
-                    Course = professor.Course != null ? new CourseDTO(professor.Id, professor.Course.CourseName) : null,
+                    CourseId = professor.CourseId,
+                    Course = professor.Course != null ? new CourseDTO(professor.Course.Id, professor.Course.CourseName) : null,
                     Exams = professor.Exams.Select(exam => 
                     new ExamDTO(exam.CreatedBy, exam.CourseId, exam.ExamDate, exam.StartTime, exam.EndTime)
                     ).ToList()
@@ -81,16 +83,19 @@ namespace eShield_API.DataService
             return professorDTOOuts;
         }
 
-        public void Update(int id, ProfessorDTOIn professorDTOIn)
+        public async Task UpdateAsync(int id, ProfessorDTOIn professorDTOIn)
         {
-            Professor professor = new Professor
+            Professor? professor = await _professorRepo.GetByIDAsync(id);
+
+            if (professor == null)
             {
-                Id = id,
-                LastName = professorDTOIn.LastName,
-                Email = professorDTOIn.Email,
-                FirstName = professorDTOIn.FirstName,
-                //Course = professorDTOIn.Course
-            };
+                return;
+            }
+
+            professor.Email = professorDTOIn.Email;
+            professor.LastName = professorDTOIn.LastName;
+            professor.FirstName = professorDTOIn.FirstName;
+            professor.CourseId = professorDTOIn.CourseId;
 
             _professorRepo.Update(professor);
             _professorRepo.Save();
