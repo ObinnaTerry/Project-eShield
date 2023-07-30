@@ -1,7 +1,9 @@
 using eShield.CoreData.Data.eShield;
 using eShield.CoreData.Data.Repos;
 using eShield.CoreData.Interfaces;
+using eShield_API.DataService;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace eShield_API
 {
@@ -23,8 +25,39 @@ namespace eShield_API
 
             builder.Services.AddScoped<IProxyDataRepo, ProxyDataRepo>();
             builder.Services.AddScoped<ProxyDataRepo>();
+            builder.Services.AddScoped<IExamCodeRepo, ExamCodeRepo>();
+            builder.Services.AddScoped<IExamRepo, ExamRepo>();
+            builder.Services.AddScoped<ExamDataService>();
+            builder.Services.AddScoped<IStudentRepo, StudentRepo>();
+            builder.Services.AddScoped<INetworkInfoRepo, NetworkInfoRepo>();
+            builder.Services.AddScoped<NetworkInfoDataService>();
+            builder.Services.AddScoped<ProxyDataService>();
+            builder.Services.AddScoped<IProfessorRepo, ProfessorRepo>();
+            builder.Services.AddScoped<ICourseRepo, CourseRepo>();
+            builder.Services.AddScoped<CourseDataService>();
+            builder.Services.AddScoped<ProfessorDataService>();
+
+            builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod()
+                );
+            });
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+
+                ILogger<Program> _logger = services.GetService<ILogger<Program>>() ?? throw new Exception("Logger is null");
+
+                _logger.LogInformation("Application starting");
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

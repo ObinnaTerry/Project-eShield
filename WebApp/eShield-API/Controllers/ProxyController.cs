@@ -25,19 +25,27 @@ namespace eShield_API.Controllers
         }
 
         // GET api/<ProxyController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("{examid}")]
+        public IActionResult Get(int examid)
         {
-            return Ok(_proxyDataService.Get(id));
+            return Ok(_proxyDataService.Get(examid));
         }
 
         // POST api/<ProxyController>
         [HttpPost]
         public IActionResult Post([FromBody] VisitedSiteDTO visitedSite)
         {
-            _proxyDataService.Post(visitedSite);
+            _proxyDataService.Post(visitedSite, IpAddress());
 
             return Ok();
+        }
+
+        private string? IpAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }

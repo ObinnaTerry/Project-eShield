@@ -1,4 +1,5 @@
-﻿using eShield.CoreData.Entities;
+﻿using eShield.CoreData.Data.Repos;
+using eShield.CoreData.Entities;
 using eShield.CoreData.Interfaces;
 using eShield_API.DTOs;
 
@@ -7,36 +8,62 @@ namespace eShield_API.DataService
     public class ProxyDataService
     {
         private readonly IProxyDataRepo _proxyDataRepo;
+        private readonly INetworkInfoRepo _networkInfoRepo;
 
-        public ProxyDataService(IProxyDataRepo proxyDataRepo)
+        public ProxyDataService(IProxyDataRepo proxyDataRepo, INetworkInfoRepo networkInfoRepo)
         {
             _proxyDataRepo = proxyDataRepo;
+            _networkInfoRepo = networkInfoRepo;
         }
 
-        public List<VisitedSiteDTO> Get(int id)
+        public List<VisitedSiteDashboardDTO> Get(int examid)
         {
-            List<VisitedSiteDTO> visitedSites = new List<VisitedSiteDTO>();
+            //TODO: Potential issue for users with only 1 record. this will cuz the second most recent record to return null
+            // which will break the code. needs to handle this situation correctly
 
-            IQueryable<VisitedSite> result = _proxyDataRepo.GetAll().Where(x => x.Id == id).GroupBy(x => x.StudentId)
-                .Select(group => group.OrderByDescending(site => site.CreateTime).First());
+            List<VisitedSiteDashboardDTO> visitedSites = new List<VisitedSiteDashboardDTO>();
 
-            foreach (var record in result)
+            List<VisitedSite> mostRecent = _proxyDataRepo.GetAll()
+                .Where(x => x.ExamId == examid)
+                .GroupBy(x => x.StudentId)
+                .Select(group => group.OrderByDescending(site => site.CreateTime).First()).ToList();
+
+            var nextRecent = _proxyDataRepo.GetAll()
+                .Where(x => x.ExamId == examid)
+                .GroupBy(x => x.StudentId)
+                .Select(group => group.OrderByDescending(site => site.CreateTime).Skip(1).Take(1))
+                .SelectMany(inner => inner).ToList();
+
+            foreach (var latest in mostRecent)
             {
-                visitedSites.Add(new VisitedSiteDTO(record.Id, record.StudentId, record.ExamId, record.Website, record.CreateTime));
+                var secondLatest = nextRecent.Where(x => x.StudentId == latest.StudentId).FirstOrDefault();
+
+                VisitedSiteDashboardDTO visitedSiteDTO = new VisitedSiteDashboardDTO 
+                {
+                    Id = latest.Id,
+                    FirstName = latest.Student.FirstName,
+                    LastName = latest.Student.LastName,
+                    Email = latest.Student.Email,
+                    Timelapse = (latest.CreateTime - secondLatest!.CreateTime).TotalSeconds
+                };
+
+                visitedSites.Add(visitedSiteDTO);
             }
 
             return visitedSites;
         }
 
-        public void Post(VisitedSiteDTO visitedSite)
+        public void Post(VisitedSiteDTO visitedSite, string? IPAdress)
         {
             VisitedSite site = new VisitedSite();
 
-            site.Id = visitedSite.Id;
-            site.StudentId = visitedSite.StudentId;
-            site.Website = visitedSite.Website;
+            NetworkInfo? networkInfo = _networkInfoRepo.GetAll().Where(x => x.Ipaddress == IPAdress).FirstOrDefault();
+
+            site.StudentId = networkInfo!.StudentId;
+            site.Website = visitedSite.WebSite!;
             site.CreateTime = visitedSite.CreateTime;
-            site.ExamId = visitedSite.ExamId;
+            site.ExamId = networkInfo.ExamId;
+            site.Macaddress = networkInfo.Macaddress;
 
             _proxyDataRepo.Insert(site);
             _proxyDataRepo.Save();

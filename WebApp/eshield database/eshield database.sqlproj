@@ -68,6 +68,8 @@
     <Build Include="dbo\Tables\Course.sql" />
     <Build Include="dbo\Tables\ExamCode.sql" />
     <Build Include="dbo\Tables\VisitedSites.sql" />
+    <Build Include="dbo\Tables\FlaggedSites.sql" />
+    <Build Include="dbo\Tables\NetworkInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="eshield database.refactorlog" />
