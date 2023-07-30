@@ -28,14 +28,6 @@ namespace ProxyService
             listener.Start();
             _logger.Information($"Proxy server started on {proxyUrl}");
 
-            //Create an HTTP listener on the desired proxy port
-            //int proxyPort = 8080;
-            //string proxyUrl = $"https://*:{proxyPort}/";
-            //HttpListener listener = new HttpListener();
-            //listener.Prefixes.Add(proxyUrl);
-            //listener.Start();
-            //_logger.Information($"Proxy server started on {proxyUrl}");
-
             try
             {
                 while (true)
